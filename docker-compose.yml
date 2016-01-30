@@ -1,0 +1,20 @@
+version: '2'
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  app:
+    image: node:4.3
+    working_dir: /opt/app
+    volumes:
+      - .:/opt/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+    environment:
+      - NODE_ENV=development
+      - DOCKER=true
+    command:
+      npm start
