@@ -1,9 +1,9 @@
 'use strict';
 
-const User = require('../lib/models/user');
-
 module.exports.get = (event, context, callback) => {
   console.info('GET /users/{id}');
+  const User = require('../lib/models/user');
+  const redis = require('../lib/redis-client');
 
   const userId = event.pathParameters.id;
 
@@ -17,7 +17,8 @@ module.exports.get = (event, context, callback) => {
       body: {
         message: err.message,
       },
-    }));
+    }))
+    .finally(() => redis.quit());
 };
 
 module.exports.update = (event, context, callback) => {
@@ -31,6 +32,8 @@ module.exports.delete = (event, context, callback) => {
 
 module.exports.create = (event, context, callback) => {
   console.info('POST /users');
+  const User = require('../lib/models/user');
+  const redis = require('../lib/redis-client');
 
   const data = JSON.parse(event.body);
 
@@ -38,16 +41,20 @@ module.exports.create = (event, context, callback) => {
     .then(user => callback(null, {
       statusCode: 200,
       body: user,
-    }));
+    }))
+    .finally(() => redis.quit());
 };
 
 
 module.exports.list = (event, context, callback) => {
   console.info('GET /users');
+  const User = require('../lib/models/user');
+  const redis = require('../lib/redis-client');
 
   return User.list()
     .then(users => callback(null, {
       statusCode: 200,
       body: users,
-    }));
+    }))
+    .finally(() => redis.quit());
 };
