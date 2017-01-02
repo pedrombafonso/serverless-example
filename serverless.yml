@@ -11,6 +11,20 @@ provider:
   stage: dev
   region: eu-west-1
 
+  environment: # Service wide environment variables
+    subnetAPrivate: subnet-3449226c
+    subnetBPrivate: subnet-c9133dad
+    subnetCPrivate: subnet-943417e2
+
+  vpc:
+    # as of Aug 2016 - these variables must be set in serverless.env.yaml
+    subnetIds:
+      - subnet-3449226c
+      - subnet-c9133dad
+      - subnet-943417e2
+    securityGroupIds:
+      - sg-212f5247
+
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
