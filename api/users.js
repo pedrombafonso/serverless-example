@@ -2,11 +2,13 @@
 
 const redisFactory = require('../lib/redis-factory');
 const userFactory = require('../lib/models/user');
+const middleware = require('../lib/middleware');
+const redisMW = middleware.redis;
 
-module.exports.get = (event, context, callback) => {
+module.exports.get = middleware([redisMW], (event, context, callback) => {
   console.info('GET /users/{id}');
 
-  const redis = redisFactory();
+  const redis = context.redis;
   const User = userFactory(redis);
   const userId = event.pathParameters.id;
 
@@ -18,9 +20,8 @@ module.exports.get = (event, context, callback) => {
     .catch(/* UserNotFoundError, */ err => callback(null, {
       statusCode: 404,
       body: JSON.stringify({ message: err.message }),
-    }))
-    .finally(() => redis.quit());
-};
+    }));
+});
 
 module.exports.update = (event, context, callback) => {
   // TODO
