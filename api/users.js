@@ -1,22 +1,23 @@
 'use strict';
 
+const redisFactory = require('../lib/redis-factory');
+const userFactory = require('../lib/models/user');
+
 module.exports.get = (event, context, callback) => {
   console.info('GET /users/{id}');
-  const User = require('../lib/models/user');
-  const redis = require('../lib/redis-client');
 
+  const redis = redisFactory();
+  const User = userFactory(redis);
   const userId = event.pathParameters.id;
 
   return User.get(userId)
     .then(user => callback(null, {
       statusCode: 200,
-      body: user,
+      body: JSON.stringify(user),
     }))
     .catch(/* UserNotFoundError, */ err => callback(null, {
       statusCode: 404,
-      body: {
-        message: err.message,
-      },
+      body: JSON.stringify({ message: err.message }),
     }))
     .finally(() => redis.quit());
 };
@@ -32,15 +33,15 @@ module.exports.delete = (event, context, callback) => {
 
 module.exports.create = (event, context, callback) => {
   console.info('POST /users');
-  const User = require('../lib/models/user');
-  const redis = require('../lib/redis-client');
 
+  const redis = redisFactory();
+  const User = userFactory(redis);
   const data = JSON.parse(event.body);
 
   return User.create(data.id, data.username)
     .then(user => callback(null, {
       statusCode: 200,
-      body: user,
+      body: JSON.stringify(user),
     }))
     .finally(() => redis.quit());
 };
@@ -48,13 +49,14 @@ module.exports.create = (event, context, callback) => {
 
 module.exports.list = (event, context, callback) => {
   console.info('GET /users');
-  const User = require('../lib/models/user');
-  const redis = require('../lib/redis-client');
+
+  const redis = redisFactory();
+  const User = userFactory(redis);
 
   return User.list()
     .then(users => callback(null, {
       statusCode: 200,
-      body: users,
+      body: JSON.stringify(users),
     }))
     .finally(() => redis.quit());
 };

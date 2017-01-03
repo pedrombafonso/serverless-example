@@ -64,33 +64,23 @@ functions:
   getUser:
     handler: api/users.get
     events:
-      - http:
-          path: users/{id}
-          method: get
+      - http: GET users/{id}
   updateUser:
     handler: api/users.update
     events:
-      - http:
-          path: users/{id}
-          method: put
+      - http: PUT users/{id}
   deleteUser:
     handler: api/users.delete
     events:
-      - http:
-          path: users/{id}
-          method: delete
+      - http: DELETE users/{id}
   createUser:
     handler: api/users.create
     events:
-      - http:
-          path: users
-          method: post
+      - http: POST users
   listUsers:
     handler: api/users.list
     events:
-      - http:
-          path: users
-          method: get
+      - http: GET users
 
   # Posts
   # postGet:
@@ -131,6 +121,19 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+# resources:
+  # Resources:
+    # Redis:
+      # Type: AWS::ElastiCache::CacheCluster
+      # Properties:
+        # CacheNodeType: cache.t2.micro
+        # CacheSubnetGroupName: default
+        # ClusterName: serverless
+        # Engine: redis
+        # NumCacheNodes: 1
+        # VpcSecurityGroupIds:
+          # - sg-212f5247
 
 plugins:
   - serverless-offline
