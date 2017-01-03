@@ -19,6 +19,9 @@ provider:
     securityGroupIds:
       - sg-212f5247
 
+  # Temporary until iamRoleStatements are loaded before functions
+  role: arn:aws:iam::795469917108:role/serverless-vpc
+
   iamRoleStatements:
     - Effect: "Allow"
       Action:
