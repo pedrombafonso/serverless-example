@@ -13,14 +13,14 @@ provider:
 
   vpc:
     subnetIds:
-      - subnet-3449226c
-      - subnet-c9133dad
-      - subnet-943417e2
+      - subnet-ea77559c
+      - subnet-273b517f
+      - subnet-71406915
     securityGroupIds:
-      - sg-212f5247
+      - sg-a33e41c5
 
   # Temporary until iamRoleStatements are loaded before functions
-  role: arn:aws:iam::795469917108:role/serverless-vpc
+  role: arn:aws:iam::255374676661:role/lambda-serverless
 
   iamRoleStatements:
     - Effect: "Allow"

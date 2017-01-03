@@ -6,7 +6,8 @@
   "scripts": {
     "start": "serverless offline --host=0.0.0.0",
     "test": "mocha --recursive",
-    "watch": "mocha --recursive --watch"
+    "watch": "mocha --recursive --watch",
+    "logs": "serverless logs -t -f"
   },
   "author": "",
   "license": "UNLICENSED",
